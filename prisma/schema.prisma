@@ -14,12 +14,17 @@ datasource db {
 }
 
 model Users {
-  id             String @id @unique
-  primeiroNome   String
-  segundoNome    String
-  email          String @unique
-  idade          String
-  numeroTelefone String?
-  tipoUser       String @default("CLIENTE")
-  imageUrl       String?
+  id          String   @id @unique
+  firstName   String
+  lastName    String
+  email       String   @unique
+  age         String
+  phoneNumber String?
+  userType    UserType
+  imageUrl    String?
+}
+
+enum UserType {
+  CLIENTE
+  TECNICO
 }

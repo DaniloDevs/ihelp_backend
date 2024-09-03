@@ -1,17 +1,22 @@
 import fastify from "fastify";
+import { CreateUser } from "./routes/createUser";
+import { FindUser } from "./routes/findUser";
 
-const server = fastify()
+
+const server = fastify({
+     logger: false
+})
+
+server.get("/", (request, reply) => {
+     reply.code(200).send("Server Running")
+})
+
+server.register(CreateUser)
+server.register(FindUser)
 
 
-try {
-     server.get("/", () => "Hello Wolrd lulu")
-
-     server.listen({
-          port: 3031
-     }, ()=> {
-          console.log("Server on!!")
-     })
-} catch (error) {
-     server.log.error(error)
-     console.log(error)
-}
+server.listen({
+     port: 3031
+}, () => {
+     console.log("Server Running!!")
+})
