@@ -8,8 +8,17 @@ export async function FindUser(server: FastifyInstance) {
 
           const user = await prisma.users.findUnique({ where: { id } })
 
-          if (!user) { reply.code(400)}
-          
-          return reply.status(201).send(user)
+          if (!user) {
+               reply.code(200).send({
+                    message: "Usuario nao encontrado",
+                    existUser: false
+               } )
+          }
+
+          return reply.status(200).send({
+               message: "Usuario  encontrado",
+               existUser: true,
+               user
+          })
      })
 }

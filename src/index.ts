@@ -16,7 +16,8 @@ server.register(FindUser)
 
 
 server.listen({
-     port: 3031
+     port: 3031,
+     host: "10.0.5.222"
 }, () => {
      console.log("Server Running!!")
 })
