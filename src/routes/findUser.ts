@@ -1,24 +1,36 @@
-import { prisma } from "./../connection/prisma"
-import { errorCodes, FastifyInstance } from "fastify"
-
+import { prisma } from "./../connection/prisma";
+import { FastifyInstance } from "fastify";
 
 export async function FindUser(server: FastifyInstance) {
      server.get("/user/:id", async (request, reply) => {
-          const { id } = request.params as { id: string }
+          const { id } = request.params as { id: string };
 
-          const user = await prisma.users.findUnique({ where: { id } })
+          try {
+               // Consulta o usuário pelo ID
+               const user = await prisma.users.findUnique({ where: { id } });
 
-          if (!user) {
-               reply.code(200).send({
-                    message: "Usuario nao encontrado",
-                    existUser: false
-               } )
+               if (!user) {
+                    // Usuário não encontrado, retorna 404
+                    return reply.code(404).send({
+                         message: "Usuário não encontrado",
+                         existUser: false,
+                    });
+               }
+
+               // Usuário encontrado, retorna os dados
+               return reply.code(200).send({
+                    message: "Usuário encontrado",
+                    existUser: true,
+                    user,
+               });
+          } catch (error) {
+               console.error("Erro ao buscar o usuário:", error);
+
+               // Tratamento de erros de banco de dados ou outros
+               return reply.code(500).send({
+                    message: "Erro interno ao buscar o usuário",
+                    error: error.message,
+               });
           }
-
-          return reply.status(200).send({
-               message: "Usuario  encontrado",
-               existUser: true,
-               user
-          })
-     })
+     });
 }
