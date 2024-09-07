@@ -25,25 +25,37 @@ export async function CreateUser(server: FastifyInstance) {
                userType,
           } = request.body as User
 
-          const userExist = await prisma.users.findUnique({ where: { email } })
-          if (userExist) {
-               return reply.status(401).send({
-                    Message: "Usuario ja existe",
+          try {
+               const existUser = await prisma.users.findUnique({ where: { email } })
+               if (existUser) {
+                    return reply.status(401).send({
+                         Message: "Usuario ja existe",
+                    })
+               }
+
+               const user = await prisma.users.create({
+                    data: {
+                         id,
+                         firstName,
+                         lastName,
+                         email,
+                         age,
+                         phoneNumber,
+                         userType,
+                    },
                })
+
+               return reply.status(201).send({
+                    message: "Usuario criado com sucesso",
+                    user: user
+               })
+          } catch (error) {
+               console.error("Erro ao criar o usuário:", error);
+
+               return reply.code(500).send({
+                    message: "Erro interno ao criar o usuário",
+                    error: error.message,
+               });
           }
-
-          const user = await prisma.users.create({
-               data: {
-                    id,
-                    firstName,
-                    lastName,
-                    email,
-                    age,
-                    phoneNumber,
-                    userType,
-               },
-          })
-
-          return reply.status(201).send(user)
      })
 }

@@ -26,7 +26,6 @@ export async function FindUser(server: FastifyInstance) {
           } catch (error) {
                console.error("Erro ao buscar o usuário:", error);
 
-               // Tratamento de erros de banco de dados ou outros
                return reply.code(500).send({
                     message: "Erro interno ao buscar o usuário",
                     error: error.message,
