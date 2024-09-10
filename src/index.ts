@@ -2,10 +2,16 @@ import fastify from "fastify";
 import { CreateUser } from "./routes/createUser";
 import { FindUser } from "./routes/findUser";
 import { exit } from 'node:process'
+import fastifyCors from "@fastify/cors";
 
 const server = fastify({
-     logger: false
+     logger: true
 })
+
+server.register(fastifyCors, {
+     origin: '*',  // Permite qualquer origem
+});
+
 
 try {
      server.get("/", (request, reply) => {
@@ -20,6 +26,7 @@ try {
      //Server
      server.listen({
           port: 3031,
+          host:"10.0.0.120"
      }, () => {
           console.log("Server Running!!")
      })

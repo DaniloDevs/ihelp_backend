@@ -13,7 +13,7 @@ export async function FindUser(server: FastifyInstance) {
 
                if (!user) {
                     // Usuário não encontrado, retorna 404
-                    return reply.code(404).send({
+                    return reply.code(200).send({
                          message: "Usuário não encontrado",
                          existUser: false,
                     });
