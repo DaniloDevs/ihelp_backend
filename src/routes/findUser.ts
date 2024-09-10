@@ -9,6 +9,8 @@ export async function FindUser(server: FastifyInstance) {
                // Consulta o usuário pelo ID
                const user = await prisma.users.findUnique({ where: { id } });
 
+               console.log("Entrou")
+
                if (!user) {
                     // Usuário não encontrado, retorna 404
                     return reply.code(404).send({
