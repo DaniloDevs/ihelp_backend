@@ -1,4 +1,3 @@
-import { UserType } from "@prisma/client"
 import { prisma } from "./../connection/prisma"
 import { FastifyInstance } from "fastify"
 
@@ -7,9 +6,9 @@ interface User {
      firstName: string
      lastName: string
      email: string
-     age: string
-     phoneNumber?: string
-     userType: UserType
+     gender: string
+     phoneNumber: string
+     userType: string
      imageUrl?: string
 }
 
@@ -20,7 +19,7 @@ export async function CreateUser(server: FastifyInstance) {
                firstName,
                lastName,
                email,
-               age,
+               gender,
                phoneNumber,
                userType,
           } = request.body as User
@@ -39,7 +38,6 @@ export async function CreateUser(server: FastifyInstance) {
                          firstName,
                          lastName,
                          email,
-                         age,
                          phoneNumber,
                          userType,
                     },

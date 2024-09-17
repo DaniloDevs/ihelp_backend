@@ -8,10 +8,6 @@ const server = fastify({
      logger: true
 })
 
-server.register(fastifyCors, {
-     origin: '*',  // Permite qualquer origem
-});
-
 
 try {
      server.get("/", (request, reply) => {
@@ -26,11 +22,11 @@ try {
      //Server
      server.listen({
           port: 3031,
-          host:"10.0.0.120"
+          host: '0.0.0.0'
      }, () => {
           console.log("Server Running!!")
      })
 } catch (error) {
-     exit(1)
      server.log.error(error)
+     exit(1)
 }

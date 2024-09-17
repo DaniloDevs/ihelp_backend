@@ -1,6 +1,7 @@
 import { prisma } from "./../connection/prisma";
 import { FastifyInstance } from "fastify";
 
+
 export async function FindUser(server: FastifyInstance) {
      server.get("/user/:id", async (request, reply) => {
           const { id } = request.params as { id: string };
@@ -35,3 +36,4 @@ export async function FindUser(server: FastifyInstance) {
           }
      });
 }
+
