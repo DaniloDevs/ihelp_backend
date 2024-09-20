@@ -20,31 +20,21 @@ export async function FindUser(server: FastifyInstance) {
                     clientId,
                     description,
                     serviceType
-               } = request.body 
-
-               try {
-                    const service = await prisma.service.create({
-                         data: {
-                              clientId,
-                              description,
-                              serviceType
-                         }
-                    })
-
-                    return reply.status(201).send({
-                         message: "Sucesso ao criar serviço",
-                         service: service
-                    })
+               } = request.body
 
 
-               } catch (error) {
-                    console.error("Erro ao criar serviço:", error);
+               const service = await prisma.service.create({
+                    data: {
+                         clientId,
+                         description,
+                         serviceType
+                    }
+               })
 
-               return reply.code(500).send({
-                    message: "Erro interno ao criar o serviço",
-                    error: error.message,
-               });
-               }
+               return reply.status(201).send({
+                    message: "Sucesso ao criar serviço",
+                    service: service
+               })
           });
 }
 

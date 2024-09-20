@@ -1,23 +1,30 @@
 import fastify from "fastify";
 import { CreateUser } from "./routes/createUser";
-import { FindUser } from "./routes/findUser";
+import { FindUserById } from "./routes/findUserById";
 import { exit } from 'node:process'
-import fastifyCors from "@fastify/cors";
+import { validatorCompiler, serializerCompiler } from "fastify-type-provider-zod";
+import { errorHandler } from "./_error/error-handler";
 
-const server = fastify({
-     logger: true
-})
+export const server = fastify()
 
 
 try {
+     // Type Provider Zod
+     server.setValidatorCompiler(validatorCompiler);
+     server.setSerializerCompiler(serializerCompiler);
+
+     // Helper
      server.get("/", (request, reply) => {
           reply.code(200).send("Server Running")
      })
 
      // Rotas
      server.register(CreateUser)
-     server.register(FindUser)
+     server.register(FindUserById)
 
+
+     // Error Handler
+     server.setErrorHandler(errorHandler)
 
      //Server
      server.listen({
