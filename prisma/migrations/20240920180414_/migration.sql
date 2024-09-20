@@ -1,14 +1,3 @@
-/*
-  Warnings:
-
-  - You are about to drop the `Users` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropTable
-PRAGMA foreign_keys=off;
-DROP TABLE "Users";
-PRAGMA foreign_keys=on;
-
 -- CreateTable
 CREATE TABLE "clients" (
     "id" TEXT NOT NULL PRIMARY KEY,
@@ -36,7 +25,8 @@ CREATE TABLE "Technical" (
 -- CreateTable
 CREATE TABLE "services" (
     "id" TEXT NOT NULL PRIMARY KEY,
-    "status" TEXT NOT NULL,
+    "status" TEXT NOT NULL DEFAULT 'inactive',
+    "accepted" BOOLEAN NOT NULL DEFAULT false,
     "serviceType" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "solution" TEXT,
