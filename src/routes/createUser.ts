@@ -1,27 +1,36 @@
+import { ZodTypeProvider } from "fastify-type-provider-zod"
 import { prisma } from "./../connection/prisma"
 import { FastifyInstance } from "fastify"
+import { z } from "zod"
 
-interface User {
-     id: string
-     firstName: string
-     lastName: string
-     email: string
-     gender: string
-     phoneNumber: string
-     userType: string
-     imageUrl?: string
-}
 
 export async function CreateUser(server: FastifyInstance) {
-     server.post("/user", async (request, reply) => {
+     server
+     .withTypeProvider<ZodTypeProvider>()
+     .post("/user",{
+          schema:{
+               body: z.object({
+                    id: z.string(),
+                    firstName: z.string(),
+                    lastName: z.string(),
+                    email: z.string(),
+                    gender: z.string(),
+                    phoneNumber: z.string(),
+                    userType: z.string(),
+                    imageUrl: z.string().optional(),
+               })
+          }
+     }, async (request, reply) => {
           const {
                id,
                firstName,
                lastName,
                email,
+               gender,
                phoneNumber,
                userType,
-          } = request.body as User
+               imageUrl
+          } = request.body 
 
           try {
                switch (userType) {
@@ -40,8 +49,10 @@ export async function CreateUser(server: FastifyInstance) {
                                    firstName,
                                    lastName,
                                    email,
+                                   gender,
                                    phoneNumber,
                                    userType,
+                                   imageUrl
                               },
                          })
 
@@ -65,8 +76,10 @@ export async function CreateUser(server: FastifyInstance) {
                                    firstName,
                                    lastName,
                                    email,
+                                   gender,
                                    phoneNumber,
                                    userType,
+                                   imageUrl
                               },
                          })
 
