@@ -13,13 +13,46 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
-  id          String   @id @unique
+model Client {
+  id          String  @id @unique
   firstName   String
   lastName    String
-  email       String   @unique
+  email       String  @unique
   age         String?
   phoneNumber String
   userType    String
   imageUrl    String?
+
+  openServices Service[]
+
+  @@map("clients")
+}
+
+model Technical {
+  id          String  @id @unique
+  firstName   String
+  lastName    String
+  email       String  @unique
+  age         String?
+  phoneNumber String
+  userType    String
+  imageUrl    String?
+
+  acceptedServices Service[]
+}
+
+model Service {
+  id          String  @id @unique @default(uuid())
+  status      String  @default("inactive")
+  accepted    Boolean @default(false)
+  serviceType String
+  description String
+  solution    String?
+  technicalId String?
+  clientId    String?
+
+  Client    Client?    @relation(fields: [clientId], references: [id])
+  Technical Technical? @relation(fields: [technicalId], references: [id])
+
+  @@map("services")
 }

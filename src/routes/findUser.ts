@@ -7,12 +7,15 @@ export async function FindUser(server: FastifyInstance) {
           const { id } = request.params as { id: string };
 
           try {
-               // Consulta o usuário pelo ID
-               const user = await prisma.users.findUnique({ where: { id } });
+               const [
+                    client,
+                    technical,
+               ] = await Promise.all([
+                    prisma.client.findUnique({ where: { id } }),
+                    prisma.technical.findUnique({ where: { id } }),
+               ])
 
-               console.log("Entrou")
-
-               if (!user) {
+               if (!client && !technical) {
                     // Usuário não encontrado, retorna 404
                     return reply.code(200).send({
                          message: "Usuário não encontrado",
@@ -21,10 +24,11 @@ export async function FindUser(server: FastifyInstance) {
                }
 
                // Usuário encontrado, retorna os dados
+               const user = client || technical;
                return reply.code(200).send({
                     message: "Usuário encontrado",
                     existUser: true,
-                    user,
+                    user: user,
                });
           } catch (error) {
                console.error("Erro ao buscar o usuário:", error);

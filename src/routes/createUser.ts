@@ -19,34 +19,62 @@ export async function CreateUser(server: FastifyInstance) {
                firstName,
                lastName,
                email,
-               gender,
                phoneNumber,
                userType,
           } = request.body as User
 
           try {
-               const existUser = await prisma.users.findUnique({ where: { email } })
-               if (existUser) {
-                    return reply.status(401).send({
-                         Message: "Usuario ja existe",
-                    })
+               switch (userType) {
+                    case "client":
+                         const existClient = await prisma.client.findUnique({ where: { id } })
+
+                         if (existClient) {
+                              return reply.status(401).send({
+                                   Message: "Usuario ja existe",
+                              })
+                         }
+
+                         const client = await prisma.client.create({
+                              data: {
+                                   id,
+                                   firstName,
+                                   lastName,
+                                   email,
+                                   phoneNumber,
+                                   userType,
+                              },
+                         })
+
+                         return reply.status(201).send({
+                              message: "Usuario criado com sucesso",
+                              user: client
+                         })
+
+                    case "technical":
+                         const existTechnical = await prisma.technical.findUnique({ where: { id } })
+
+                         if (existTechnical) {
+                              return reply.status(401).send({
+                                   Message: "Usuario ja existe",
+                              })
+                         }
+                         
+                         const technical = await prisma.technical.create({
+                              data: {
+                                   id,
+                                   firstName,
+                                   lastName,
+                                   email,
+                                   phoneNumber,
+                                   userType,
+                              },
+                         })
+
+                         return reply.status(201).send({
+                              message: "Usuario criado com sucesso",
+                              user: technical
+                         })
                }
-
-               const user = await prisma.users.create({
-                    data: {
-                         id,
-                         firstName,
-                         lastName,
-                         email,
-                         phoneNumber,
-                         userType,
-                    },
-               })
-
-               return reply.status(201).send({
-                    message: "Usuario criado com sucesso",
-                    user: user
-               })
           } catch (error) {
                console.error("Erro ao criar o usuário:", error);
 
