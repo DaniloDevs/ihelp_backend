@@ -4,7 +4,7 @@ CREATE TABLE "clients" (
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "age" TEXT,
+    "gender" TEXT NOT NULL,
     "phoneNumber" TEXT NOT NULL,
     "userType" TEXT NOT NULL,
     "imageUrl" TEXT
@@ -16,7 +16,7 @@ CREATE TABLE "Technical" (
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "age" TEXT,
+    "gender" TEXT NOT NULL,
     "phoneNumber" TEXT NOT NULL,
     "userType" TEXT NOT NULL,
     "imageUrl" TEXT
