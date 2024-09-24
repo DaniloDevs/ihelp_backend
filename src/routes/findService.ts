@@ -9,7 +9,7 @@ export async function FindServices(server: FastifyInstance) {
           .get("/service", {
                schema: {
                     querystring: z.object({
-                         accepted: z.boolean()
+                         accepted: z.boolean().optional()
                     })
                }
           }, async (request, reply) => {

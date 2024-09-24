@@ -4,10 +4,10 @@ import { FastifyInstance } from "fastify";
 import { z } from "zod";
 
 
-export async function FindUser(server: FastifyInstance) {
+export async function CreateService(server: FastifyInstance) {
      server
           .withTypeProvider<ZodTypeProvider>()
-          .get("/service", {
+          .post("/service", {
                schema: {
                     body: z.object({
                          clientId: z.string(),
@@ -27,8 +27,9 @@ export async function FindUser(server: FastifyInstance) {
                     data: {
                          clientId,
                          description,
-                         serviceType
-                    }
+                         serviceType,
+
+                    },
                })
 
                return reply.status(201).send({
