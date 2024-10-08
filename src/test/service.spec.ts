@@ -12,10 +12,10 @@ describe('Service', async () => {
           method: "POST",
           url: "/user",
           body: {
-               id: "clienttest2",
+               id: "service_test_1",
                firstName: "Jhon",
                lastName: "Doe",
-               email: "test.exemple@.com",
+               email: "service.test@exemple.com",
                gender: "macho",
                phoneNumber: "1234215431",
                userType: "client",
@@ -27,7 +27,7 @@ describe('Service', async () => {
                method: "POST",
                url: "/service",
                body: {
-                    clientId: "clienttest2",
+                    clientId: "service_test_1",
                     serviceType: "Telefone",
                     description: "Ele quebrou e ta todo fudido"
                }

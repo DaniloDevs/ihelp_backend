@@ -11,10 +11,10 @@ describe('Client', () => {
                method: "POST",
                url: "/user",
                body: {
-                    id: "clienttest1",
+                    id: "client_test_1",
                     firstName: "Jane",
                     lastName: "Doe",
-                    email: "test.exemple@.com",
+                    email: "client.test@exemple.com",
                     gender: "macho",
                     phoneNumber: "1234215431",
                     userType: "client",
@@ -25,7 +25,7 @@ describe('Client', () => {
      })
 
      test('GET /user/:id', async () => {
-          const clientId = "clienttest1"
+          const clientId = "client_test_1"
           const response = await server.inject({
                method: "GET",
                url: `/user/${clientId}`,
