@@ -34,8 +34,9 @@ export async function CreateService(server: FastifyInstance) {
                     data: {
                          clientId,
                          description,
-                         serviceType
-                    }
+                         serviceType,
+
+                    },
                })
 
                return reply.status(201).send({

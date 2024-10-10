@@ -4,13 +4,8 @@ import { FindUserById } from "./routes/findUserById";
 import { exit } from 'node:process';
 import { validatorCompiler, serializerCompiler } from "fastify-type-provider-zod";
 import { errorHandler } from "./_error/error-handler";
-<<<<<<< HEAD
 import { CreateService } from "./routes/createService";
 import { FindServices } from "./routes/findService";
-=======
-import { FindServices } from "./routes/findService";
-import { CreateService } from "./routes/createService";
->>>>>>> 4d4864f37db59c5f0cf37ffbc634c4ace2e121eb
 
 export const server = fastify();
 
@@ -28,11 +23,7 @@ try {
      // Routes
      server.register(CreateUser); //  Client
      server.register(FindUserById);
-<<<<<<< HEAD
      server.register(CreateService); // Service
-=======
-     server.register(CreateService);
->>>>>>> 4d4864f37db59c5f0cf37ffbc634c4ace2e121eb
      server.register(FindServices);
 
      // Error Handler
