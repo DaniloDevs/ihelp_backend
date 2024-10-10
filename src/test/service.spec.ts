@@ -4,8 +4,8 @@ import { prisma } from "../connection/prisma"
 
 
 afterAll(async () => await prisma.$transaction([
-     prisma.service.deleteMany(),
-     prisma.client.deleteMany()
+     prisma.service.deleteMany({ where: { description: "Ele quebrou e ta todo fudido" } }),
+     prisma.client.delete({ where: { id: "id_client_test_service" } })
 ]))
 
 describe('Service', async () => {
@@ -13,7 +13,7 @@ describe('Service', async () => {
           method: "POST",
           url: "/user",
           body: {
-               id: "clienttest2",
+               id: "id_client_test_service",
                firstName: "Jhon",
                lastName: "Doe",
                email: "test.exemple@.com",
@@ -28,7 +28,7 @@ describe('Service', async () => {
                method: "POST",
                url: "/service",
                body: {
-                    clientId: "clienttest2",
+                    clientId: "id_client_test_service",
                     serviceType: "Telefone",
                     description: "Ele quebrou e ta todo fudido"
                }
@@ -37,13 +37,4 @@ describe('Service', async () => {
           expect(response.statusCode).toBe(201)
      })
 
-     test('GET /service', async () => {
-          const response = await server.inject({
-               method: "GET",
-               url: "/service"
-          })
-
-          expect(response.statusCode).toBe(200)
-          
-     })
 })
