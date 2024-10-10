@@ -4,6 +4,8 @@ import { FindUserById } from "./routes/findUserById";
 import { exit } from 'node:process';
 import { validatorCompiler, serializerCompiler } from "fastify-type-provider-zod";
 import { errorHandler } from "./_error/error-handler";
+import { CreateService } from "./routes/createService";
+import { FindServices } from "./routes/findService";
 
 export const server = fastify();
 
@@ -19,8 +21,10 @@ try {
      });
 
      // Routes
-     server.register(CreateUser);
+     server.register(CreateUser); //  Client
      server.register(FindUserById);
+     server.register(CreateService); // Service
+     server.register(FindServices);
 
      // Error Handler
      server.setErrorHandler(errorHandler);
