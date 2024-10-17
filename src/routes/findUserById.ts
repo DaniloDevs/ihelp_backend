@@ -26,17 +26,17 @@ export async function FindUserById(server: FastifyInstance) {
                if (!client && !technical) {
                     // Usuário não encontrado, retorna 404
                     return reply.code(200).send({
-                         message: "Usuário não encontrado",
-                         existUser: false,
+                         Message: "Usuário não encontrado",
+                         ExistUser: false,
                     });
                }
 
                // Usuário encontrado, retorna os dados
                const user = client || technical;
                return reply.code(200).send({
-                    message: "Usuário encontrado",
-                    existUser: true,
-                    user: user,
+                    Message: "Usuário encontrado",
+                    ExistUser: true,
+                    User: user,
                });
 
           });

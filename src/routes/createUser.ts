@@ -56,8 +56,8 @@ export async function CreateUser(server: FastifyInstance) {
                          })
 
                          return reply.status(201).send({
-                              message: "Usuario criado com sucesso",
-                              user: client
+                              Message: "Usuario criado com sucesso",
+                              User: client
                          })
 
                     case "technical":
@@ -83,8 +83,8 @@ export async function CreateUser(server: FastifyInstance) {
                          })
 
                          return reply.status(201).send({
-                              message: "Usuario criado com sucesso",
-                              user: technical
+                              Message: "Usuario criado com sucesso",
+                              User: technical
                          })
                }
           })

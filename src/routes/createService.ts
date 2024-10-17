@@ -22,6 +22,13 @@ export async function CreateService(server: FastifyInstance) {
                     serviceType
                } = request.body
 
+               const client = await prisma.client.findUnique({ where: { id: clientId } })
+
+               if(!client) {
+                    return reply.status(400).send({
+                         Message: "Não foi encontrar um usuario"
+                    })
+               }
 
                const service = await prisma.service.create({
                     data: {
@@ -33,8 +40,8 @@ export async function CreateService(server: FastifyInstance) {
                })
 
                return reply.status(201).send({
-                    message: "Sucesso ao criar serviço",
-                    service: service
+                    Message: "Sucesso ao criar serviço",
+                    Service: service
                })
           });
 }

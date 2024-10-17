@@ -1,10 +1,11 @@
-import { server } from './../index';
-import { prisma } from '../connection/prisma';
-import { afterAll, describe, expect, test } from "vitest";
+import { afterAll, describe, test, expect } from "vitest"
+import { server } from ".."
+import { prisma } from "../connection/prisma"
+
 
 afterAll(async () => await prisma.$transaction([
-     prisma.service.deleteMany(),
-     prisma.client.deleteMany()
+     prisma.service.deleteMany({ where: { description: "Ele quebrou e ta todo fudido" } }),
+     prisma.client.delete({ where: { id: "id_client_test_service" } })
 ]))
 
 describe('Service', async () => {
@@ -12,7 +13,7 @@ describe('Service', async () => {
           method: "POST",
           url: "/user",
           body: {
-               id: "service_test_1",
+               id: "id_client_test_service",
                firstName: "Jhon",
                lastName: "Doe",
                email: "service.test@exemple.com",
@@ -27,22 +28,27 @@ describe('Service', async () => {
                method: "POST",
                url: "/service",
                body: {
-                    clientId: "service_test_1",
+                    clientId: "id_client_test_service",
                     serviceType: "Telefone",
                     description: "Ele quebrou e ta todo fudido"
                }
           })
 
-          expect(response.statusCode).toBe(201)
-     })
+          const { Message, Service } = JSON.parse(response.body)
 
+          expect(response.statusCode).toBe(201)
+          expect(Message).toBe("Sucesso ao criar serviço")
+          expect(Service.description).toBe("Ele quebrou e ta todo fudido")
+     })
      test('GET /service', async () => {
           const response = await server.inject({
                method: "GET",
-               url: "/service"
+               url: "/service",
           })
 
+          const { Message, Services } = JSON.parse(response.body)
           expect(response.statusCode).toBe(200)
-          
+          expect(Message).toBe("Todos os serviços foram listados")
+          expect(Services[0].description).toBe("Ele quebrou e ta todo fudido")
      })
 })
