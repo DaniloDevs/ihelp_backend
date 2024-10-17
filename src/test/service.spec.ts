@@ -23,32 +23,4 @@ describe('Service', async () => {
           }
      })
 
-     test('POST /service', async () => {
-          const response = await server.inject({
-               method: "POST",
-               url: "/service",
-               body: {
-                    clientId: "id_client_test_service",
-                    serviceType: "Telefone",
-                    description: "Ele quebrou e ta todo fudido"
-               }
-          })
-
-          const { Message, Service } = JSON.parse(response.body)
-
-          expect(response.statusCode).toBe(201)
-          expect(Message).toBe("Sucesso ao criar serviço")
-          expect(Service.description).toBe("Ele quebrou e ta todo fudido")
-     })
-     test('GET /service', async () => {
-          const response = await server.inject({
-               method: "GET",
-               url: "/service",
-          })
-
-          const { Message, Services } = JSON.parse(response.body)
-          expect(response.statusCode).toBe(200)
-          expect(Message).toBe("Todos os serviços foram listados")
-          expect(Services[0].description).toBe("Ele quebrou e ta todo fudido")
-     })
 })

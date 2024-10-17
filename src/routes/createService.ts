@@ -32,10 +32,13 @@ export async function CreateService(server: FastifyInstance) {
 
                const service = await prisma.service.create({
                     data: {
-                         clientId,
                          description,
                          serviceType,
-
+                         Client: {
+                              connect: {
+                                   id: clientId
+                              }
+                         }
                     },
                })
 

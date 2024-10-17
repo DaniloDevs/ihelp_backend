@@ -64,7 +64,7 @@ describe('technical Routes', () => {
      })
      test('GET /user/:id', async () => {
           const response = await server.inject({
-               method: "GET",
+               method: "GET", 
                url: "/user/123142"
           })
 
