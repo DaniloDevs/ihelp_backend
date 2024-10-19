@@ -13,46 +13,41 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Client {
-  id          String  @id @unique
-  firstName   String
-  lastName    String
-  email       String  @unique
-  gender         String
-  phoneNumber String
-  userType    String
-  imageUrl    String?
+model users {
+  id        String @id 
+  firstName String
+  lastName  String
+  type      String
 
-  openServices Service[]
-
-  @@map("clients")
+  clients   clients[]
+  technicals technicals[]
 }
 
-model Technical {
-  id          String  @id @unique
-  firstName   String
-  lastName    String
-  email       String  @unique
-  gender         String
-  phoneNumber String
-  userType    String
-  imageUrl    String?
-
-  acceptedServices Service[]
+model clients {
+  id      String    @id @default(uuid())
+  email     String @unique
+  user    users     @relation(fields: [usersId], references: [id])
+  usersId String
+  service service[]
 }
 
-model Service {
-  id          String  @id @unique @default(uuid())
-  status      String  @default("inactive")
-  accepted    Boolean @default(false)
-  serviceType String
-  description String
-  solution    String?
-  technicalId String?
-  clientId    String?
+model technicals {
+  id      String    @id @default(uuid())
+  email     String @unique
+  user    users     @relation(fields: [usersId], references: [id])
+  usersId String
+  service service[]
+}
 
-  Client    Client?    @relation(fields: [clientId], references: [id])
-  Technical Technical? @relation(fields: [technicalId], references: [id])
-
-  @@map("services")
+model service {
+  id           String     @id @default(uuid())
+  status       String
+  accepted     Boolean    @default(false)
+  serviceType  String
+  description  String
+  solution     String
+  clientsId    String
+  technicalsId String
+  client       clients    @relation(fields: [clientsId], references: [id])
+  technical    technicals @relation(fields: [technicalsId], references: [id])
 }

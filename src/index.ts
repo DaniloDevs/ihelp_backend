@@ -1,12 +1,10 @@
 import fastify from "fastify";
-import { CreateUser } from "./routes/createUser";
-import { FindUserById } from "./routes/findUserById";
 import { exit } from 'node:process';
 import { validatorCompiler, serializerCompiler } from "fastify-type-provider-zod";
 import { errorHandler } from "./_error/error-handler";
-import { CreateService } from "./routes/createService";
-import { FindServicesById } from "./routes/findServiceById";
-import { AcceptedService } from "./routes/acceptedService";
+import { RegisterClient } from "./routes/registerClient";
+import { RegisterTechnical } from "./routes/registerTechnical";
+import { FindUserById } from "./routes/findUserById";
 
 export const server = fastify();
 
@@ -22,11 +20,9 @@ try {
      });
 
      // Routes
-     server.register(CreateUser); //  Client
-     server.register(FindUserById);
-     server.register(CreateService); // Service
-     server.register(FindServicesById);
-     server.register(AcceptedService);
+     server.register(RegisterClient)
+     server.register(RegisterTechnical)
+     server.register(FindUserById)
 
      // Error Handler
      server.setErrorHandler(errorHandler);
