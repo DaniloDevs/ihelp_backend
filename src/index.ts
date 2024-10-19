@@ -6,6 +6,7 @@ import { validatorCompiler, serializerCompiler } from "fastify-type-provider-zod
 import { errorHandler } from "./_error/error-handler";
 import { CreateService } from "./routes/createService";
 import { FindServicesById } from "./routes/findServiceById";
+import { AcceptedService } from "./routes/acceptedService";
 
 export const server = fastify();
 
@@ -25,6 +26,7 @@ try {
      server.register(FindUserById);
      server.register(CreateService); // Service
      server.register(FindServicesById);
+     server.register(AcceptedService);
 
      // Error Handler
      server.setErrorHandler(errorHandler);
