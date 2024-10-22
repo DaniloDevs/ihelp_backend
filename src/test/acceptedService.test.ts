@@ -67,6 +67,6 @@ test('deve ser possivel que o tecnico aceite um serviço valido', async () => {
      
      const { Message } = JSON.parse(response.body);
 
-     expect(response.statusCode).toBe(201);
+     expect(response.statusCode).toBe(200);
      expect(Message).toBe("Serviço foi aceito com sucesso");
 });

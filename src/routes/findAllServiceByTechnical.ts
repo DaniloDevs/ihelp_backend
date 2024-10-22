@@ -18,6 +18,9 @@ export default async function FindAllServiceByTechnical(server: FastifyInstance)
 
                const technical = await prisma.users.findUnique({
                     where: { id: technicalId },
+                    include: {
+                         technicals: true
+                    }
                });
 
                if (!technical) {
@@ -26,15 +29,14 @@ export default async function FindAllServiceByTechnical(server: FastifyInstance)
 
                const services = await prisma.service.findMany({
                     where: {
-                         technicalsId: technical.id // Melhorar a condição de filtragem
-                    }
+                         technicalsId: technical.technicals[0].id,  
+                         accepted: true,             
+                    },
                });
-
-
 
                return reply.status(200).send({
                     Message: "Todos os serviços foram listados com sucesso",
-                    Services: services
-               })
+                    Services: services,
+               });
           })
 }

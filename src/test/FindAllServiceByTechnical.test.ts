@@ -3,85 +3,87 @@ import { server } from "..";
 import { prisma } from "../connection/prisma";
 
 afterAll(async () => {
-     const client = await prisma.clients.findUnique({ where: { email: "james.bond@example.com" } });
-     const technical = await prisma.technicals.findUnique({ where: { email: "natasha.romanoff@example.com" } });
+     const client = await prisma.clients.findUnique({ where: { email: "bruce.wayne@example.com" } });
+     const technical = await prisma.technicals.findUnique({ where: { email: "tony.stark@example.com" } });
 
      if (client && technical) {
           await prisma.$transaction([
                prisma.service.deleteMany({ where: { clientsId: client.id } }),
-               prisma.clients.delete({ where: { email: "james.bond@example.com" } }),
-               prisma.users.delete({ where: { id: "2024115681" } }),
-               prisma.technicals.delete({ where: { email: "natasha.romanoff@example.com" } }),
-               prisma.users.delete({ where: { id: "2023109880" } })
+               prisma.clients.delete({ where: { email: "bruce.wayne@example.com" } }),
+               prisma.users.delete({ where: { id: "3024115681" } }),
+               prisma.technicals.delete({ where: { email: "tony.stark@example.com" } }),
+               prisma.users.delete({ where: { id: "3023109880" } })
           ]);
      }
 });
 
 test('deve ser possivel listar todos os serviços ativos de um tecnico', async () => {
-     const client = await server.inject({
+     // Registro do cliente
+     const clientResponse = await server.inject({
           method: "POST",
           url: "/register/client",
           body: {
-               id: "2024115681",
-               firstName: "James",
-               lastName: "Bond",
-               email: "james.bond@example.com",
+               id: "3024115681",
+               firstName: "Bruce",
+               lastName: "Wayne",
+               email: "bruce.wayne@example.com",
                type: "client"
           }
      });
+     expect(clientResponse.statusCode).toBe(201);
 
-     const tec = await server.inject({
+     // Registro do técnico
+     const technicalResponse = await server.inject({
           method: "POST",
           url: "/register/technical",
           body: {
-               id: "2023109880",
-               firstName: "Natasha",
-               lastName: "Romanoff",
-               email: "natasha.romanoff@example.com",
+               id: "3023109880",
+               firstName: "Tony",
+               lastName: "Stark",
+               email: "tony.stark@example.com",
                type: "technical"
           }
      });
+     expect(technicalResponse.statusCode).toBe(201);
 
-     const res = await server.inject({
+     // Criação de um serviço
+     const serviceResponse = await server.inject({
           method: "POST",
           url: "/service",
           body: {
-               clientId: "2024115681",
-               serviceType: "problema de segurança",
-               description: "suspeito de atividade maliciosa"
+               clientId: "3024115681",
+               serviceType: "problema de sistema",
+               description: "falha nos sistemas de segurança da mansão"
           }
      });
+     expect(serviceResponse.statusCode).toBe(201);
 
-     const { Service } = JSON.parse(res.body);
+     const { Service } = JSON.parse(serviceResponse.body);
 
-     const serv = await server.inject({
+     // Aceitação do serviço pelo técnico
+     const serviceAcceptResponse = await server.inject({
           method: "POST",
           url: `/service/${Service.id}/accepted`,
           body: {
-               technicalId: "2023109880",
+               technicalId: "3023109880"
           }
      });
+     expect(serviceAcceptResponse.statusCode).toBe(200);
 
-     const response = await server.inject({
+     const acceptedService = JSON.parse(serviceAcceptResponse.body);
+
+     // Busca dos serviços aceitos do técnico
+     const listServicesResponse = await server.inject({
           method: "GET",
-          url: `/services/2023109880`  // Use the correct technicalId
+          url: `/services/3023109880`
      });
+     expect(listServicesResponse.statusCode).toBe(200);
 
-     const { Message, Services } = JSON.parse(response.body);
-     console.log(client.body)
-     console.log(tec.body)
-     console.log(res.body)
-     console.log(serv.body)
-     console.log(response.body)
+     const { Message, Services } = JSON.parse(listServicesResponse.body);
 
-     expect(response.statusCode).toBe(200);
+     // Validações
      expect(Message).toBe("Todos os serviços foram listados com sucesso");
-     expect(Services).toBeDefined();  // Ensure Services is defined
-     expect(Services.length).toBeGreaterThan(0);  // Ensure there are services
-
-     const technicalServices = Services[0].technicals[0].service; // Accessing the service data correctly
-     expect(technicalServices).toBeDefined(); // Ensure services are defined
-     expect(technicalServices.length).toBeGreaterThan(0); // Ensure there are services
-
-     expect(technicalServices[0].description).toBe("suspeito de atividade maliciosa"); // Correct description check
+     expect(Services).toBeInstanceOf(Array);
+     expect(Services.length).toBeGreaterThan(0);
+     expect(Services[0].accepted).toBe(true);
 });
