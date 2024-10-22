@@ -4,13 +4,14 @@ import { prisma } from "../connection/prisma"
 
 server.listen({ port: 0 })
 
+
+
 afterAll(async () => {
      const client = await prisma.clients.findUnique({ where: { email: "alice.smith@example.com" } })
      if (client) {
-          await prisma.clients.delete({ where: { email: "alice.smith@example.com" } })
+          await prisma.clients.delete({ where: { email: "alice.smith@example.com" }, include: { service: true } })
           await prisma.users.delete({ where: { id: "2024115678" } })
      }
-
 })
 
 test('deve ser possivel criar um serviço valido', async () => {
@@ -36,7 +37,7 @@ test('deve ser possivel criar um serviço valido', async () => {
           }
      })
 
-     
+
      const { Message, Client, Service } = JSON.parse(response.body)
 
      expect(response.statusCode).toBe(201)

@@ -19,7 +19,7 @@ model users {
   lastName  String
   type      String
 
-  clients    clients[]
+  clients    clients[] 
   technicals technicals[]
 }
 
