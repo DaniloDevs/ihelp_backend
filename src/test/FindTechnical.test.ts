@@ -2,7 +2,6 @@ import { afterAll, describe, expect, test } from "vitest"
 import { server } from ".."
 import { prisma } from "../connection/prisma"
 
-server.listen({ port: 0 })
 
 afterAll(async () => {
      const client = await prisma.technicals.findUnique({ where: { email: "emma.williams@example.com" } })

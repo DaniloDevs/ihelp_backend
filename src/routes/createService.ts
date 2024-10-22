@@ -38,7 +38,7 @@ export default async function CreateService(server: FastifyInstance) {
 
 
                // Cria o serviço e relaciona com o cliente
-               await prisma.service.create({
+               const service = await prisma.service.create({
                     data: {
                          serviceType,
                          description,
@@ -47,15 +47,13 @@ export default async function CreateService(server: FastifyInstance) {
                                    email: client.clients[0].email
                               }
                          }
-                    },
+                    }
                });
 
                return reply.status(201).send({
                     Message: "Serviço criado com sucesso",
                     Client:  client.firstName,
-                    Service:{
-                         serviceType, description
-                    }
+                    Service: service
                });
           })
 }

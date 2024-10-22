@@ -1,35 +1,32 @@
-import { afterAll, describe, expect, test } from "vitest"
-import { server } from ".."
-import { prisma } from "../connection/prisma"
-
-server.listen({ port: 0 })
+import { afterAll, describe, expect, test } from "vitest";
+import { server } from "..";
+import { prisma } from "../connection/prisma";
 
 afterAll(async () => {
-     const client = await prisma.technicals.findUnique({ where: { email: "john.doe@example.com" } })
-     if (client) {
-          await prisma.technicals.delete({ where: { email: "john.doe@example.com" } })
-          await prisma.users.delete({ where: { id: "2023109876" } })
-     }
+    const client = await prisma.clients.findUnique({ where: { email: "bob.brown@example.com" } });
+    if (client) {
+        await prisma.clients.delete({ where: { email: "bob.brown@example.com" } });
+        await prisma.users.delete({ where: { id: "2023105433" } });
+    }
+});
 
-})
+test('deve ser possivel criar um cliente valido', async () => {
+    const response = await server.inject({
+        method: "POST",
+        url: "/register/client",
+        body: {
+            id: "2023105433",
+            firstName: "Bob",
+            lastName: "Brown",
+            email: "bob.brown@example.com",
+            type: "client"
+        }
+    });
 
-test('deve ser possivel criar um tecnico valido', async () => {
-     const response = await server.inject({
-          method: "POST",
-          url: "/register/technical",
-          body: {
-               id: "2023109876",
-               firstName: "John",
-               lastName: "Doe",
-               email: "john.doe@example.com",
-               type: "technical"
-          }
-     })
-     
-     const { Message, Technical } = JSON.parse(response.body)
+    const { Message, Client } = JSON.parse(response.body);
 
-     expect(response.statusCode).toBe(201)
-     expect(Message).toBe("Tecnico criado com sucesso")
-     expect(Technical).toHaveProperty("firstName", "John")
-     expect(Technical).toHaveProperty("type", "technical")
-})
+    expect(response.statusCode).toBe(201);
+    expect(Message).toBe("Usuario criado com sucesso");
+    expect(Client).toHaveProperty("firstName", "Bob");
+    expect(Client).toHaveProperty("email", "bob.brown@example.com");
+});

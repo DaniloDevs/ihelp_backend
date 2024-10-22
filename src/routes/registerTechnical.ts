@@ -52,6 +52,7 @@ export async function RegisterTechnical(server: FastifyInstance) {
                return reply.status(201).send({
                     Message: "Tecnico criado com sucesso",
                     Technical: {
+                         id,
                          firstName,
                          lastName,
                          email,

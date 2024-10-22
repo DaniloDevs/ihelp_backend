@@ -2,14 +2,14 @@ import { afterAll, expect, test } from "vitest"
 import { server } from ".."
 import { prisma } from "../connection/prisma"
 
-server.listen({ port: 0 })
-
 
 
 afterAll(async () => {
      const client = await prisma.clients.findUnique({ where: { email: "alice.smith@example.com" } })
+     
      if (client) {
-          await prisma.clients.delete({ where: { email: "alice.smith@example.com" }, include: { service: true } })
+          await prisma.service.deleteMany({ where: { clientsId: client.id } })
+          await prisma.clients.delete({ where: { email: "alice.smith@example.com" }, })
           await prisma.users.delete({ where: { id: "2024115678" } })
      }
 })
