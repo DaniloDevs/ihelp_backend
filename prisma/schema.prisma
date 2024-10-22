@@ -14,18 +14,18 @@ datasource db {
 }
 
 model users {
-  id        String @id 
+  id        String @id
   firstName String
   lastName  String
   type      String
 
-  clients   clients[]
+  clients    clients[]
   technicals technicals[]
 }
 
 model clients {
   id      String    @id @default(uuid())
-  email     String @unique
+  email   String    @unique
   user    users     @relation(fields: [usersId], references: [id])
   usersId String
   service service[]
@@ -33,21 +33,20 @@ model clients {
 
 model technicals {
   id      String    @id @default(uuid())
-  email     String @unique
+  email   String    @unique
   user    users     @relation(fields: [usersId], references: [id])
   usersId String
   service service[]
 }
 
 model service {
-  id           String     @id @default(uuid())
-  status       String
-  accepted     Boolean    @default(false)
+  id           String      @id @default(uuid())
+  accepted     Boolean     @default(false)
   serviceType  String
   description  String
-  solution     String
-  clientsId    String
-  technicalsId String
-  client       clients    @relation(fields: [clientsId], references: [id])
-  technical    technicals @relation(fields: [technicalsId], references: [id])
+  solution     String?
+  client       clients?    @relation(fields: [clientsId], references: [id])
+  technical    technicals? @relation(fields: [technicalsId], references: [id])
+  clientsId    String?
+  technicalsId String?
 }

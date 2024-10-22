@@ -5,6 +5,7 @@ import { errorHandler } from "./_error/error-handler";
 import { RegisterClient } from "./routes/registerClient";
 import { RegisterTechnical } from "./routes/registerTechnical";
 import { FindUserById } from "./routes/findUserById";
+import CreateService from "./routes/createService";
 
 export const server = fastify();
 
@@ -23,6 +24,7 @@ try {
      server.register(RegisterClient)
      server.register(RegisterTechnical)
      server.register(FindUserById)
+     server.register(CreateService)
 
      // Error Handler
      server.setErrorHandler(errorHandler);
