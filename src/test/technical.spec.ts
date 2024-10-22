@@ -40,7 +40,7 @@ describe('technical Routes', () => {
                     email: "technical@exemple.com",
                     gender: "macho",
                     phoneNumber: "34214",
-                    userType: "client",
+                    userType: "technical",
                }
           })
 
