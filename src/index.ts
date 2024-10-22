@@ -8,6 +8,7 @@ import { FindUserById } from "./routes/findUserById";
 import CreateService from "./routes/createService";
 import AcceptedService from "./routes/acceptedService";
 import FindAllServices from "./routes/findAllServices";
+import FindAllServiceByTechnical from "./routes/findAllServiceByTechnical";
 
 export const server = fastify();
 
@@ -29,6 +30,7 @@ try {
      server.register(CreateService)
      server.register(AcceptedService)
      server.register(FindAllServices)
+     server.register(FindAllServiceByTechnical)
 
      // Error Handler
      server.setErrorHandler(errorHandler);

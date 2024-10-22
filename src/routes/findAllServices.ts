@@ -9,9 +9,9 @@ export default async function FindAllServices(server: FastifyInstance) {
           .withTypeProvider<ZodTypeProvider>()
           .get("/services", async (request, reply) => {
                const services = await prisma.service.findMany({
-                    include: {
-                         technical: false
-                    }
+                    where: {
+                         technicalsId: null
+                   }
                })
 
 

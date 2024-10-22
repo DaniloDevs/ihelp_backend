@@ -17,9 +17,8 @@ afterAll(async () => {
      }
 });
 
-
-test('deve ser possivel listar todos os serviços ', async () => {
-     await server.inject({
+test('deve ser possivel listar todos os serviços ativos de um tecnico', async () => {
+     const client = await server.inject({
           method: "POST",
           url: "/register/client",
           body: {
@@ -31,7 +30,7 @@ test('deve ser possivel listar todos os serviços ', async () => {
           }
      });
 
-     const resTec = await server.inject({
+     const tec = await server.inject({
           method: "POST",
           url: "/register/technical",
           body: {
@@ -41,32 +40,21 @@ test('deve ser possivel listar todos os serviços ', async () => {
                email: "natasha.romanoff@example.com",
                type: "technical"
           }
-     }); 
+     });
 
      const res = await server.inject({
           method: "POST",
-          url: `/service`,
+          url: "/service",
           body: {
                clientId: "2024115681",
                serviceType: "problema de segurança",
                description: "suspeito de atividade maliciosa"
           }
-     })
-
-     await server.inject({
-          method: "POST",
-          url: `/service`,
-          body: {
-               clientId: "2024115681",
-               serviceType: "problema de software",
-               description: "o aplicativo não está funcionando corretamente"
-          }
      });
 
+     const { Service } = JSON.parse(res.body);
 
-     const { _, Service } = JSON.parse(res.body);
-
-     await server.inject({
+     const serv = await server.inject({
           method: "POST",
           url: `/service/${Service.id}/accepted`,
           body: {
@@ -76,13 +64,24 @@ test('deve ser possivel listar todos os serviços ', async () => {
 
      const response = await server.inject({
           method: "GET",
-          url: `/services`
+          url: `/services/2023109880`  // Use the correct technicalId
      });
 
      const { Message, Services } = JSON.parse(response.body);
+     console.log(client.body)
+     console.log(tec.body)
+     console.log(res.body)
+     console.log(serv.body)
+     console.log(response.body)
 
      expect(response.statusCode).toBe(200);
      expect(Message).toBe("Todos os serviços foram listados com sucesso");
-     expect(Services[0].description).toBe("o aplicativo não está funcionando corretamente")
-     expect(Services[0].technicalsId).toBeNull()
+     expect(Services).toBeDefined();  // Ensure Services is defined
+     expect(Services.length).toBeGreaterThan(0);  // Ensure there are services
+
+     const technicalServices = Services[0].technicals[0].service; // Accessing the service data correctly
+     expect(technicalServices).toBeDefined(); // Ensure services are defined
+     expect(technicalServices.length).toBeGreaterThan(0); // Ensure there are services
+
+     expect(technicalServices[0].description).toBe("suspeito de atividade maliciosa"); // Correct description check
 });

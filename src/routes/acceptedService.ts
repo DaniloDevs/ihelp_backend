@@ -49,7 +49,7 @@ export default async function AcceptedService(server: FastifyInstance) {
                }
 
                try {
-                    await prisma.service.update({
+                    const service = await prisma.service.update({
                          where: { id },
                          data: {
                               accepted: true,
@@ -63,6 +63,7 @@ export default async function AcceptedService(server: FastifyInstance) {
 
                     return reply.status(201).send({
                          Message: "Serviço foi aceito com sucesso",
+                         Accepted: service
                     });
                } catch (error) {
                     console.error("Erro ao aceitar o serviço:", error); // Log do erro para depuração
