@@ -7,10 +7,11 @@ server.listen({ port: 0 })
 afterAll(async () => {
      const client = await prisma.clients.findUnique({ where: { email: "bob.johnson@example.com" } })
      if (client) {
-          await prisma.clients.delete({ where: { email: "bob.johnson@example.com" } })
-          await prisma.users.delete({ where: { id: "2023112345" } })
+          await prisma.$transaction([
+               prisma.clients.delete({ where: { email: "bob.johnson@example.com" } }),
+               prisma.users.delete({ where: { id: "2023112345" } })
+          ])
      }
-
 })
 
 test('deve ser possivel encontrar um cliente por um ID valido', async () => {

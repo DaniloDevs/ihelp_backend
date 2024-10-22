@@ -5,8 +5,10 @@ import { prisma } from "../connection/prisma";
 afterAll(async () => {
     const client = await prisma.clients.findUnique({ where: { email: "bob.brown@example.com" } });
     if (client) {
-        await prisma.clients.delete({ where: { email: "bob.brown@example.com" } });
-        await prisma.users.delete({ where: { id: "2023105433" } });
+        await prisma.$transaction([
+            prisma.clients.delete({ where: { email: "bob.brown@example.com" } }),
+            prisma.users.delete({ where: { id: "2023105433" } }),
+        ])
     }
 });
 

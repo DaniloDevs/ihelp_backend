@@ -3,6 +3,7 @@ import { server } from "..";
 import { prisma } from "../connection/prisma";
 
 afterAll(async () => {
+     
      const client = await prisma.clients.findUnique({ where: { email: "alex.johnson@example.com" } });
      const technical = await prisma.technicals.findUnique({ where: { email: "lisa.white@example.com" } });
 

@@ -6,10 +6,11 @@ import { prisma } from "../connection/prisma"
 afterAll(async () => {
      const client = await prisma.clients.findUnique({ where: { email: "alice.smith@example.com" } })
      if (client) {
-          await prisma.clients.delete({ where: { email: "alice.smith@example.com" } })
-          await prisma.users.delete({ where: { id: "2023105432" } })
+          await prisma.$transaction([
+               prisma.clients.delete({ where: { email: "alice.smith@example.com" } }),
+               prisma.users.delete({ where: { id: "2023105432" } }),
+          ])
      }
-
 })
 
 test('deve ser possivel criar um cliente valido', async () => {
@@ -25,7 +26,7 @@ test('deve ser possivel criar um cliente valido', async () => {
           }
      })
 
-     
+
      const { Message, Client } = JSON.parse(response.body)
 
      expect(response.statusCode).toBe(201)

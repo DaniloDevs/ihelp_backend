@@ -6,11 +6,13 @@ import { prisma } from "../connection/prisma"
 
 afterAll(async () => {
      const client = await prisma.clients.findUnique({ where: { email: "alice.smith@example.com" } })
-     
+
      if (client) {
-          await prisma.service.deleteMany({ where: { clientsId: client.id } })
-          await prisma.clients.delete({ where: { email: "alice.smith@example.com" }, })
-          await prisma.users.delete({ where: { id: "2024115678" } })
+          await prisma.$transaction([
+               prisma.service.deleteMany({ where: { clientsId: client.id } }),
+               prisma.clients.delete({ where: { email: "alice.smith@example.com" }, }),
+               prisma.users.delete({ where: { id: "2024115678" } }),
+          ])
      }
 })
 
