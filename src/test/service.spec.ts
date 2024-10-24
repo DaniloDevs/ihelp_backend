@@ -50,8 +50,8 @@ describe('Service Routes', async () => {
                     description: "Ele quebrou e ta todo fudido"
                }
           })
+          console.log(response.body)
 
-        
           const { Message, Service } = JSON.parse(response.body)
           serviceId = Service.id
           expect(response.statusCode).toBe(201)
@@ -73,5 +73,6 @@ describe('Service Routes', async () => {
           const { Message, Service } = JSON.parse(response.body)
 
           expect(response.statusCode).toBe(200)
+          expect(Service.accepted).toBe(true)
      })
 })
