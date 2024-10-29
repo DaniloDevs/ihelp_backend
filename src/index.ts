@@ -40,8 +40,8 @@ try {
      }, () => {
           console.log("Server Running!!");
      });
-} catch (error) {
-     server.log.error(error);
+} catch (error: any) {
+     console.log(error);
      exit(1);
 }
 
