@@ -60,7 +60,7 @@ describe('technical Routes', () => {
 
           expect(response.statusCode).toBe(200)
           expect(Message).toBe("Usuário encontrado")
-          expect(User.firstName).toBe("Test")
+          expect(User.firstName).toBe("Testatndo")
      })
      test('GET /user/:id', async () => {
           const response = await server.inject({

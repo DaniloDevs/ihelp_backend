@@ -43,5 +43,8 @@ export const errorHandler: FastifyErrorHandler = (error, request, reply) => {
      }
 
      // Tratamento de outros erros
-     return reply.status(500).send({ message: 'Erro interno do servidor!' });
+     return reply.status(500).send({
+          message: 'Erro interno do servidor!',
+          error
+     });
 };

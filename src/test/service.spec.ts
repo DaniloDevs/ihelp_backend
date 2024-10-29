@@ -6,7 +6,7 @@ import { prisma } from "../connection/prisma"
 afterAll(async () => await prisma.$transaction([
      prisma.client.delete({ where: { id: "id_client_test_service" } }),
      prisma.technical.delete({ where: { email: "serv.test@exemple.com" } }),
-     prisma.service.deleteMany({ where: { description: "Ele quebrou e ta todo fudido" } }),
+     prisma.service.deleteMany({ where: { description: "tela travada depois de cair agua" } }),
 ]))
 
 describe('Service Routes', async () => {
@@ -46,17 +46,17 @@ describe('Service Routes', async () => {
                url: "/service",
                body: {
                     clientId: "id_client_test_service",
-                    serviceType: "tela quebrada",
-                    description: "Ele quebrou e ta todo fudido"
+                    serviceType: "computador",
+                    description: "tela travada depois de cair agua"
                }
           })
-          console.log(response.body)
+          
 
           const { Message, Service } = JSON.parse(response.body)
           serviceId = Service.id
           expect(response.statusCode).toBe(201)
           expect(Message).toBe("Sucesso ao criar serviço")
-          expect(Service.serviceType).toBe("tela quebrada")
+          expect(Service.serviceType).toBe("computador")
           expect(Service.accepted).toBe(false)
      })
 
@@ -69,7 +69,7 @@ describe('Service Routes', async () => {
                }
           })
 
-          console.log(response.body)
+        
           const { Message, Service } = JSON.parse(response.body)
 
           expect(response.statusCode).toBe(200)

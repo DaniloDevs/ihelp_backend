@@ -14,7 +14,6 @@ export async function CreateUser(server: FastifyInstance) {
                          firstName: z.string(),
                          lastName: z.string(),
                          email: z.string(),
-                         gender: z.string(),
                          phoneNumber: z.string(),
                          userType: z.string(),
                          imageUrl: z.string().optional(),
@@ -26,7 +25,6 @@ export async function CreateUser(server: FastifyInstance) {
                     firstName,
                     lastName,
                     email,
-                    gender,
                     phoneNumber,
                     userType,
                     imageUrl
@@ -48,10 +46,10 @@ export async function CreateUser(server: FastifyInstance) {
                                    firstName,
                                    lastName,
                                    email,
-                                   gender,
-                                   phoneNumber,
+                                   gender: '',
+                                   phoneNumber: '',
                                    userType,
-                                   imageUrl
+                                   imageUrl:''
                               },
                          })
 
@@ -75,10 +73,10 @@ export async function CreateUser(server: FastifyInstance) {
                                    firstName,
                                    lastName,
                                    email,
-                                   gender,
-                                   phoneNumber,
+                                   gender: '',
+                                   phoneNumber: '',
                                    userType,
-                                   imageUrl
+                                   imageUrl:''
                               },
                          })
 

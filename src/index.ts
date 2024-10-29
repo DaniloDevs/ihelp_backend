@@ -7,6 +7,7 @@ import { errorHandler } from "./_error/error-handler";
 import { CreateService } from "./routes/createService";
 import { FindServicesById } from "./routes/findServiceById";
 import { AcceptedService } from "./routes/acceptedService";
+import { FindServices } from "./routes/findServices";
 
 export const server = fastify();
 
@@ -18,7 +19,7 @@ try {
 
      // Helper
      server.get("/", (request, reply) => {
-          reply.code(200).send("Server Running");
+          reply.code(200).send("Server Running!");
      });
 
      // Routes
@@ -27,6 +28,7 @@ try {
      server.register(CreateService); // Service
      server.register(FindServicesById);
      server.register(AcceptedService);
+     server.register(FindServices);
 
      // Error Handler
      server.setErrorHandler(errorHandler);
