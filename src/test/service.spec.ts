@@ -46,7 +46,7 @@ describe('Service Routes', async () => {
                url: "/service",
                body: {
                     clientId: "id_client_test_service",
-                    serviceType: "computador",
+                    serviceType: "celular",
                     description: "tela travada depois de cair agua"
                }
           })
@@ -56,7 +56,7 @@ describe('Service Routes', async () => {
           serviceId = Service.id
           expect(response.statusCode).toBe(201)
           expect(Message).toBe("Sucesso ao criar serviço")
-          expect(Service.serviceType).toBe("computador")
+          expect(Service.serviceType).toBe("celular")
           expect(Service.accepted).toBe(false)
      })
 
