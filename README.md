@@ -1,6 +1,6 @@
 <h1 align="center">iHelp Backend</h1>
 
-![Static Badge](https://img.shields.io/badge/Status-Desenvolvimento-green)
+![Static Badge](https://img.shields.io/badge/Status-Pausado-green)
 
 > 📋
 > Sobre o Projeto
